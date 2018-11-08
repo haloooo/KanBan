@@ -1,0 +1,14 @@
+{
+  "database":[
+    {
+      "MODEL": "KK07",
+      "ENGINE": "django.db.backends.postgresql_psycopg2",
+      "NAME": "kanban0928",
+      "USER": "postgres",
+      "PASSWORD": "postgres",
+      "HOST": "localhost",
+      "PORT": "5432"
+    }
+  ],
+  "time_interval":10
+}

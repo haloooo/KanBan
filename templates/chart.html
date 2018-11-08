@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HomePage</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    {#    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">#}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="../static/sources/css/bootstrap/bootstrap.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../static/sources/css/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../static/sources/css/Ionicons/ionicons.min.css">
+    <!-- basictable -->
+    <link rel="stylesheet" href="../static/sources/css/basictable/basictable.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../static/sources/css/dist/AdminLTE.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../static/sources/css/dist/_all-skins.css">
+    <!-- toastr -->
+    <link rel="stylesheet" href="../static/sources/css/toastr/toastr.css">
+    <!-- style -->
+    <link rel="stylesheet" href="../static/sources/css/basictable/style.css">
+
+    <style>
+        .chart_green {
+{#            animation: twinkle_green 1s infinite;#}
+{#            animation-direction: alternate;#}
+        }
+        .chart_olive {
+            animation: twinkle_olive 1s infinite;
+            animation-direction: alternate;
+        }
+        .chart_orange {
+            animation: twinkle_orange 1s infinite;
+            animation-direction: alternate;
+        }
+        .chart_red {
+            animation: twinkle_red 1s infinite;
+            animation-direction: alternate;
+        }
+        @keyframes twinkle_red {
+            from {
+                background: #ffffff;
+            }
+            to {
+                background: #fa7f7f;
+            }
+        }
+        @keyframes twinkle_orange {
+            from {
+                background: #ffffff;
+            }
+            to {
+                background: #ffd890;
+            }
+        }
+        @keyframes twinkle_olive {
+            from {
+                background: #ffffff;
+            }
+            to {
+                background: #b2b1b1;
+            }
+        }
+        @keyframes twinkle_green {
+            from {
+                background: #ffffff;
+            }
+            to {
+                background: #228B22;
+            }
+        }
+        @-webkit-keyframes twinkling {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        td {
+            border: 1px solid black;
+        }
+
+        th {
+            border: 1px solid black;
+        }
+
+        tr {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini" ng-app="AppHomePage">
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <div class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini">Nidec</span>
+            <!-- logo for regular state and mobile devices -->
+            <img src="../static/sources/images/nidec.png">
+        </div>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Sidebar toggle button-->
+
+            <div align="center" style="vertical-align: center">
+                <span style="font-size: 30px;color: #ffffff">{{ model }}-ASSY产量计划-实绩-预测</span>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="active"><a href="#"><i class="fa fa-bookmark"></i> <span>HomePage</span></a></li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        {% verbatim %}
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <!-- 图表容器 DOM -->
+            <div id="row" class="row">
+
+            </div>
+
+        </section>
+        {% endverbatim %}
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+</div>
+<!-- ./wrapper -->
+<!-- jQuery 3 -->
+<script src="../static/sources/js/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../static/sources/js/bootstrap.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/sources/js/adminlte.js"></script>
+<!-- Bootstarp table -->
+<script src="../static/sources/js/bootstrap-table.js"></script>
+<!-- AngularJS -->
+<script src="../static/sources/js/angular.js"></script>
+<!-- Toastr -->
+<script src="../static/sources/js/toastr.js"></script>
+<!-- BasicTable -->
+<script src="../static/sources/js/jquery.basictable.js"></script>
+<!-- HighChart.js -->
+<script src="../static/sources/js/highcharts.js"></script>
+<!-- homePage.js -->
+<script src="../static/js/homePage.js"></script>
+<script>
+    toastr.options.positionClass = 'toast-top-center';
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+{% extends 'public/base.html' %}
+{% block title %} 用户管理 {% endblock %}
+{% block style %}
+{% endblock %}
+
+{# 主体内容#}
+{% block content %}
+    <div class="content-wrapper" ng-controller="myCtrl">
+        {% verbatim %}
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <!-- 容器 DOM -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="search-form">
+                        <form role="form" id="searchForm" method="post">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th width="10%">用户名：</th>
+                                    <td width="20%">
+                                        <input type="text" class="form-control" id="user_name" ng-model="s_user_name">
+                                    </td>
+                                    <th width="10%">姓名：</th>
+                                    <td width="20%">
+                                        <input type="text" class="form-control" id="true_name" ng-model="s_true_name">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-flat" ng-click="load_page(1)">
+                                            查询
+                                        </button>
+                                        <a class="btn btn-primary btn-flat" ng-click="showAdd()">新增</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="noData" ng-if="!isShow">
+                        暂无记录
+                    </div>
+                    <div class="box" ng-if="isShow" style="background:white" ng-cloak>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th style="width:5%">序号</th>
+                                <th style="width:26%">用户名</th>
+                                <th style="width:26%">姓名</th>
+                                <th style="width:26%">修改Plan权限</th>
+                                <th style="width:10%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in musers">
+                                <td>{{ $index + 1 + (pageNum-1)*10}}</td>
+                                <td>{{ item.user_name }}</td>
+                                <td>{{ item.true_name }}</td>
+                                <td>
+                                    <div ng-if="!item.see_plan ">否</div>
+                                    <div ng-if="item.see_plan ">是</div>
+                                </td>
+                                <td>
+                                    <a ng-click="showEdit(item.num,item.id,item.true_name,item.user_name,item.see_plan)"
+                                       class="btn bg-blue btn-flat btn-xs">编辑</a>
+                                    <a ng-click="showDelete(item.id,item.true_name,item.num)"
+                                       class="btn bg-red btn-flat btn-xs">删除</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-if="isShow">
+                        <div class="page_count">
+                            <div class="page-total" ng-cloak>
+                                共{{count}}条记录，请翻页查看
+                            </div>
+                        </div>
+                        <div class="page_change">
+                            <div class="page-bar">
+                                <ul class="pagination" ng-cloak>
+                                    <li ng-class="{true:'disabled'}[p_current==1]"><a href="javascript:void(0);"
+                                                                                      ng-click="load_page(1)">首页</a>
+                                    </li>
+                                    <li ng-repeat="page in pages" ng-class="{true:'active'}[p_current==page]"><a
+                                            href="javascript:void(0);" ng-click="load_page(page)">{{ page }}</a></li>
+                                    <li ng-class="{true:'disabled'}[p_current==p_all_page]"><a
+                                            href="javascript:void(0);" ng-click="load_page(p_all_page)">尾页</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="modal fade" id="editModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">×
+                        </button>
+                        <h4 class="modal-title" id="editTitle">
+
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="editNum">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form id="form" class="form-horizontal form" role="form" method="post">
+                                    <table class="table table-bordered table_sxcondition">
+                                        <tbody>
+                                        <tr>
+                                            <th width="20%">*用户名：</th>
+                                            <td width="80%">
+                                                <input type="text" class="form-control" ng-model="user_name">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width="20%">*姓名：</th>
+                                            <td width="80%">
+                                                <input type="text" class="form-control" ng-model="true_name">
+                                            </td>
+                                        </tr>
+                                           <tr>
+                                            <th width="20%">修改Plan权限：</th>
+                                            <td width="80%">
+                                                <input type="checkbox"  ng-model="see_plan" style="margin-top: 10px">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="save()">
+                            保存
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!-- 模态框删除（Modal） -->
+        <div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             data-backdrop="static">
+            <div class="modal-dialog" style="width: 150px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">×
+                        </button>
+                        <div class="modal-title">
+                            是否删除
+                        </div>
+                    </div>
+                    <div class="modal-body" v-model="deleteId" style="display: none">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="delete()">
+                            确认
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        {% endverbatim %}
+        <!-- /.content -->
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="../static/js/user.js"></script>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends 'public/base.html' %}
+{% block title %} 计划管理 {% endblock %}
+{% block style %}
+{% endblock %}
+
+{# 主体内容#}
+{% block content %}
+    <div class="content-wrapper" ng-controller="myCtrl">
+        {% verbatim %}
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <!-- 容器 DOM -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="search-form">
+                        <form role="form" id="searchForm" method="post">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th width="10%">Assy：</th>
+                                    <td width="20%">
+                                        <input type="text" class="form-control" id="user_name" ng-model="s_assy_cd">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-flat" ng-click="load_page(1)">
+                                            查询
+                                        </button>
+                                        <a class="btn btn-primary btn-flat" ng-click="showEdit()">编辑</a>
+                                        <a class="btn btn-primary btn-flat" ng-click="saveEdit()">保存</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="noData" ng-if="!isShow">
+                        暂无记录
+                    </div>
+                    <div class="box" ng-if="isShow" style="background:white" ng-cloak>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+
+                                <th style="width:4%">序号</th>
+                                <th style="width:16%">assy</th>
+                                <th style="width:16%">plan_cnt</th>
+                                <th style="width:16%">green</th>
+                                <th style="width:16%">olive</th>
+                                <th style="width:16%">orange</th>
+                                <th style="width:7%" ng-if="isEdit">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in musers | orderBy : 'sort_num' ">
+                                <td style="width:10px">{{ item.sort_num }}</td>
+                                <td style="width:100px">
+                                   {{ item.assy_cd }}
+                                </td>
+                                <td>
+                                    <div ng-if="!isEdit" style="width:100px">{{ item.plan_cnt }}</div>
+                                    <div ng-if="isEdit" style="width:100px">
+                                        <input style="width:100px;height: 20px" type="number"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               ng-model="item.plan_cnt"/></div>
+                                </td>
+                                <td>
+                                    <div ng-if="!isEdit" style="width:100px">{{ item.green }}</div>
+                                    <div ng-if="isEdit" style="width:100px">
+                                        <input style="width:100px;height: 20px" type="number"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               ng-model="item.green"/></div>
+                                </td>
+                                <td>
+                                    <div ng-if="!isEdit" style="width:100px">{{ item.olive }}</div>
+                                    <div ng-if="isEdit" style="width:100px">
+                                        <input style="width:100px;height: 20px" type="number"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               ng-model="item.olive"/></div>
+                                </td>
+                                <td>
+                                    <div ng-if="!isEdit" style="width:100px">{{ item.orange }}</div>
+                                    <div ng-if="isEdit" style="width:100px">
+                                        <input style="width:100px;height: 20px" type="number"
+                                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}"
+                                               ng-model="item.orange"/></div>
+                                </td>
+                                <td ng-if="isEdit">
+                                    <a ng-click="up_Sort(item)"
+                                       class="btn bg-red btn-flat btn-xs" style="width: 25px">
+                                        <span class="fa fa-arrow-up" aria-hidden="true"></span>
+                                    </a>
+                                    <a ng-click="down_Sort(item)"
+                                       class="btn bg-red btn-flat btn-xs" style="width: 25px">
+                                        <span class="fa fa-arrow-down" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+        <!-- 模态框新增和编辑（Modal） -->
+        <div class="modal fade" id="editModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">×
+                        </button>
+                        <h4 class="modal-title" id="editTitle">
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="editNum">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form id="form1" class="form-horizontal form" role="form" method="post">
+                                    <table class="table table-bordered table_sxcondition">
+                                        <tbody>
+                                        <tr>
+                                            <th width="20%">*assy_cd：</th>
+                                            <td width="80%">
+                                                <input type="text" class="form-control" ng-model="assy_cd">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width="20%">*plan_cnt：</th>
+                                            <td width="80%">
+                                                <input type="number" class="form-control" ng-model="plan_cnt">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width="20%">*green：</th>
+                                            <td width="80%">
+                                                <input type="number" class="form-control" ng-model="green">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width="20%">*olive：</th>
+                                            <td width="80%">
+                                                <input type="number" class="form-control" ng-model="olive">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th width="20%">*orange：</th>
+                                            <td width="80%">
+                                                <input type="number" class="form-control" ng-model="orange">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="saveInsert()">
+                            保存
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- 模态框删除（Modal） -->
+        <div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             data-backdrop="static">
+            <div class="modal-dialog" style="width: 150px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">×
+                        </button>
+                        <div class="modal-title">
+                            是否删除
+                        </div>
+                    </div>
+                    <div class="modal-body" v-model="deleteId" style="display: none">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="delete()">
+                            确认
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        {% endverbatim %}
+
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script src="../static/js/plan.js"></script>
+{% endblock %}

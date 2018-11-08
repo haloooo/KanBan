@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+        {% block title %}{% endblock %} Nedic
+    </title>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="../../static/sources/css/bootstrap/bootstrap.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../static/sources/css/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../../static/sources/css/Ionicons/ionicons.min.css">
+    <!-- basictable -->
+    {#    <link rel="stylesheet" href="../../static/sources/css/basictable/basictable.css">#}
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../static/sources/css/dist/AdminLTE.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../../static/sources/css/dist/_all-skins.css">
+    <!-- toastr -->
+    <link rel="stylesheet" href="../../static/sources/css/toastr/toastr.css">
+    <!-- style -->
+    {#    <link rel="stylesheet" href="../../static/sources/css/basictable/style.css">#}
+    <link rel="stylesheet" href="../../static/style/common.css">
+    <link rel="stylesheet" href="../../static/sources/css/honeySwitch.css">
+</head>
+
+<body class="skin-blue sidebar-mini fixed sidebar-mini-expand-feature" ng-app="myApp">
+
+
+{% include 'public/header.html' %}
+
+
+{% block content %}{% endblock %}
+
+<!-- ./wrapper -->
+<!-- jQuery 3 -->
+
+
+<script src="../../static/sources/js/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../../static/sources/js/bootstrap.js"></script>
+<!-- AdminLTE App -->
+<script src="../../static/sources/js/adminlte.js"></script>
+<!-- Bootstarp table -->
+<script src="../../static/sources/js/bootstrap-table.js"></script>
+<!-- AngularJS -->
+<script src="../../static/sources/js/angular.js"></script>
+<!-- Toastr -->
+<script src="../../static/sources/js/toastr.js"></script>
+<!-- BasicTable -->
+<script src="../../static/sources/js/jquery.basictable.js"></script>
+<!-- HighChart.js -->
+<script src="../../static/sources/js/highcharts.js"></script>
+
+<script src="../../static/sources/js/honeySwitch.js"></script>
+
+<script src="../../static/js/public.js"></script>
+
+
+
+
+<script>
+    toastr.options.positionClass = 'toast-top-center';
+</script>
+
+{% block script %} {% endblock %}
+{% block style %} {% endblock %}
+
+
+</body>
+</html>
+

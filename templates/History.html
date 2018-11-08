@@ -1,0 +1,72 @@
+{% extends 'public/base.html' %}
+{% block title %} 首页 {% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="../static/style/homePage.css">
+{% endblock %}
+
+{# 主体内容#}
+{% block content %}
+    <div class="content-wrapper" ng-controller="myCtrl" style="background: #ffffff;">
+        {% verbatim %}
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <form class="form-horizontal">
+                <div class="form-group form-group-xs">
+                    <label class="col-sm-1 control-label" for="formGroupInputSmall">Date:</label>
+                    <div class="col-sm-11">
+                        <input class="form-control select_date" type="date" ng-model="select_date">
+                        <button class="btn btn-primary" type="submit" ng-click="doSearch()">Search</button>
+                    </div>
+                </div>
+            </form>
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active">
+                    <a href="#dawn_chart" data-toggle="tab">
+                        CHART
+                    </a>
+                </li>
+                <li><a href="#dawn_table" data-toggle="tab">TABLE</a></li>
+            </ul>
+
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="dawn_chart">
+                    <!-- 图表容器 DOM -->
+                    <div id="row">
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="dawn_table">
+                    <div ng-repeat="result in table_result">
+                        <div class="assy_title">{{ result.assy_cd }}
+                        </div>
+                        <div ng-if="result.table_cnt_result.length==0" class="assy_nodata">
+                            There's no data
+                        </div>
+                        <div class="assy_table_div" ng-if="result.table_cnt_result.length>0">
+                            <div class="table_time"
+                                 ng-repeat="table_time in result.timepart_label track by $index">{{ table_time }}
+                            </div>
+                            <div class="table_time">合计</div>
+                            <div style="clear: both"></div>
+                            <div ng-class="{'assy_table_td':true,'color_green':table_value.color_green,'color_olive':table_value.color_olive,'color_orange':table_value.color_orange,'color_red':table_value.color_red,'color_nodata':table_value.color_nodata}"
+                                 ng-repeat="table_value in result.table_cnt_result track by $index">{{
+                                table_value.value }}
+                            </div>
+                            <div ng-class="{'assy_table_td':true,'color_green':result.color_green,'color_olive':result.color_olive,'color_orange':result.color_orange,'color_red':result.color_red,'color_nodata':result.color_nodata}">
+                                {{ result.now_Actual }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+        {% endverbatim %}
+        <!-- /.content -->
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="../static/js/history.js"></script>
+{% endblock %}
